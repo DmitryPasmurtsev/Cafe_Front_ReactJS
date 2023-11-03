@@ -1,0 +1,30 @@
+.form {
+    width: 300px;
+}
+
+.form label{
+    font-weight: bold;
+}
+
+.table{
+    width: 95%;
+}
+
+.thead {
+    position: sticky;
+    top: 20px;
+}
+
+.center {
+    text-align: center;
+}
+
+.head button {
+    background-color: #04AA6D;
+    color: white;
+}
+
+.head button:hover {
+    background-color: #00935d;
+}
+

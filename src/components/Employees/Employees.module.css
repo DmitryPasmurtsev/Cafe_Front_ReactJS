@@ -1,0 +1,77 @@
+.form {
+    width: 700px;
+}
+
+.col {
+    width: 50%; display: inline-block;
+}
+
+.searchInput{
+    width: 300px;
+}
+
+.field {
+    max-width: 300px;
+    min-width: 200px;
+}
+
+.form label{
+    font-weight: bold;
+}
+
+
+.item {
+    text-decoration: none;
+}
+
+/*.head h2{
+    position: sticky;
+    top: 20px;
+}*/
+
+.head button {
+    background-color: #04AA6D;
+    color: white;
+}
+
+.head button:hover {
+    background-color: #00935d;
+}
+
+.center {
+    text-align: center;
+}
+
+.employeeItem{
+    border: 4px solid black; /* Параметры границы */
+    border-width: 2px;
+    background: #f1f1f1; /* Цвет фона */
+    border-color: #00935d;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 250px;
+   width: 700px;
+
+    display: grid;
+    grid-template-areas: 
+    "image content"
+    "image content";
+    grid-template-rows: 10fr 10fr;
+    grid-template-columns: 2fr 5fr;
+}
+
+.employeeItem p{
+    margin: 0;
+}
+
+.employeeItem content{
+    grid-area: content;
+}
+
+.employeeItem img{
+    grid-area: image;
+    width: 150px;
+   
+    margin: auto;
+}

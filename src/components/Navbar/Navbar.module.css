@@ -1,0 +1,36 @@
+.nav {
+    grid-area: n;
+    background-color: #f1f1f1;
+    padding: 10px;
+    position: fixed;
+    left: 15px;
+    top: 65px;
+    width: 230px;
+    height: 900px;
+}
+
+.item {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.active {
+    display: block;
+    background-color: #04AA6D;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+  
+  .item:hover {
+    background-color: #787878;
+    color: white;
+    text-decoration: none;
+  }
+
+  .active:hover {
+    color: white;
+    text-decoration: none;
+  }

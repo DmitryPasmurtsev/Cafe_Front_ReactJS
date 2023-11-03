@@ -1,0 +1,52 @@
+.header {
+    grid-area: h;
+    display: grid;
+    background-color: #f1f1f1;
+    grid-template-areas:
+        "img title profile";
+    grid-template-columns: 1fr 19fr 2fr;
+    position: fixed;
+    left: 15px;
+    width: 1350px;
+}
+
+.header .img {
+    grid-area: img;
+    width: 50px;
+    padding-left: 15px;
+    padding-top: 3px;
+}
+
+.header .profile {
+    grid-area: profile;
+    top: 100%;
+    margin: 0px;
+    padding: 5px;
+    font-size: 30px;
+}
+
+.header .title {
+    grid-area: title;
+    font-size: 40px;
+    padding-top: 5px;
+    
+}
+
+.user {
+    display: inline-flex;
+    column-gap: 8px;
+    align-items: center;
+}
+
+.user:hover {
+    color:  #04AA6D;
+}
+
+.icon {
+    font-size: 20px;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+}
