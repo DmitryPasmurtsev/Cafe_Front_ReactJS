@@ -11,7 +11,19 @@
 }
 
 .col {
-    width: 50%; display: inline-block;
+    width: 50%; 
+    display: inline-table;
+    margin-bottom: 30px;
+}
+
+.row {
+    vertical-align: top;
+}
+
+.errorCol {
+    width: 50%; 
+    display: inline-table;
+    margin-bottom: 6px;
 }
 
 .field {
@@ -47,5 +59,16 @@ padding-right: 100px;
 
 .center {
     text-align: center;
+}
+
+.errorField{
+    border-color: red;
+    color: red;
+}
+
+.errorMessage{
+    color: red;
+    width: max-content;
+    margin-bottom: 0px;
 }
 

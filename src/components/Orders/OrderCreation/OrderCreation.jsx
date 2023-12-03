@@ -70,6 +70,7 @@ const OrderCreation = () => {
             name="productName"
             onChange={handleChange}
             onBlur={handleBlur}
+            required
             className="form-control"
           >
             <option value={""}>Не выбран</option>
@@ -83,10 +84,12 @@ const OrderCreation = () => {
           <Field
             type="number"
             name="amount"
+            max="5"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.amount}
             className="form-control"
+            required
           />
         </div>
           <button type="button" onClick={() => {addProductInOrder(values); resetForm()}} disabled={isSubmitting} className="btn btn-primary">

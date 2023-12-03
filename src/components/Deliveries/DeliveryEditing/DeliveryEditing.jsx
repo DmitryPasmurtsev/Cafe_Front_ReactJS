@@ -3,7 +3,7 @@ import { Form, Formik, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect} from "react";
 import { getDeliverySel } from "../../../redux/selectors/delivery-selectors";
-import { editDelivery, getDelivery } from "../../../redux/reducers/deliveriesReducer";
+import { editDelivery, getDelivery, setDelivery } from "../../../redux/reducers/deliveriesReducer";
 import { getProductsSel } from "../../../redux/selectors/product-selectors";
 import { getSuppliersSel } from "../../../redux/selectors/supplier-selectors";
 import { getEmployeesSel } from "../../../redux/selectors/employee-selectors";
@@ -12,6 +12,7 @@ import { getSuppliers } from "../../../redux/reducers/suppliersReducer";
 import { getProducts } from "../../../redux/reducers/productsReducer";
 import { getJwtSel } from "../../../redux/selectors/user-selectors";
 import s from "../Deliveries.module.css";
+import { deliveriesAPI } from "../../../api/restAPI";
 
 const DeliveryEditing = () => {
 
@@ -50,8 +51,12 @@ const DeliveryEditing = () => {
       initialValues={delivery}
       
       onSubmit={(values) => {
-          dispatch(editDelivery(jwt, delivery.id, values));
-          navigate('/deliveries');
+          deliveriesAPI.editDelivery(jwt, delivery.id, values)
+          .then((response) => {
+            dispatch(getDelivery(jwt, deliveryId));
+           });
+          const path = "/deliveries/" + deliveryId;
+          navigate(path);
       }}
     >
       {({

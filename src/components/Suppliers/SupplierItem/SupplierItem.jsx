@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteSupplier } from "../../../redux/reducers/suppliersReducer";
+import { deleteSupplier, getSuppliers } from "../../../redux/reducers/suppliersReducer";
 import s from "../Suppliers.module.css";
 import { getJwtSel, getUserSel } from "../../../redux/selectors/user-selectors";
 
@@ -32,6 +32,7 @@ const SupplierItem = (props) => {
           className="btn btn-danger mx-2"
           onClick={() => {
             dispatch(deleteSupplier(jwt, supplier.id));
+            dispatch(getSuppliers(jwt));
             navigate("/suppliers" );
           }}
         >

@@ -36,7 +36,7 @@ const DeliveryCreation = () => {
   return (
     
     <div>
-      <h1>Добавление поставки</h1><br/>
+      <h1>Добавление поставки</h1><br/><br/>
       <Formik
       enableReinitialize
       initialValues={{}}
@@ -54,7 +54,7 @@ const DeliveryCreation = () => {
       }) => (
         
         <Form onSubmit={handleSubmit} class={s.form}>
-        <div className="form-group">
+        <div className={s.col}>
           <label>Дата поставки</label>
           <Field
             type="date"
@@ -62,18 +62,18 @@ const DeliveryCreation = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.date}
-            className="form-control"
+            className={`form-control ${s.field}`}
             required
           />
-        </div>
-        <div className="form-group">
+        </div><br/><br/>
+        <div className={s.col}>
           <label>Поставляемый продукт</label>
           <Field
             as="select"
             name="product.id"
             onChange={handleChange}
             onBlur={handleBlur}
-            className="form-control"
+            className={`form-control ${s.field}`}
             required
           >
             <option value="">Не выбран</option>
@@ -82,7 +82,7 @@ const DeliveryCreation = () => {
             })}
         </Field>
         </div>
-        <div className="form-group">
+        <div className={s.col}>
           <label>Количество</label>
           <Field
             type="number"
@@ -90,18 +90,18 @@ const DeliveryCreation = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.amount}
-            className="form-control"
+            className={`form-control ${s.field}`}
             required
           />
-        </div>
-        <div className="form-group">
+        </div><br/><br/>
+        <div className={s.col}>
           <label>Поставщик</label>
           <Field
             as="select"
             name="supplier.id"
             onChange={handleChange}
             onBlur={handleBlur}
-            className="form-control"
+            className={`form-control ${s.field}`}
             required
           >
             <option value="">Не выбран</option>
@@ -110,14 +110,14 @@ const DeliveryCreation = () => {
             })}
           </Field>
           </div>
-        <div className="form-group">
+          <div className={s.col}>
           <label>Принимающий работник</label>
           <Field
             as="select"
             name="employee.id"
             onChange={handleChange}
             onBlur={handleBlur}
-            className="form-control"
+            className={`form-control ${s.field}`}
             required
           >
             <option value="">Не выбран</option>
@@ -125,7 +125,7 @@ const DeliveryCreation = () => {
               return <option value={employee.id}>{employee.fullName}</option>
             })}
           </Field>
-          </div>
+          </div><br/><br/>
         <button type="submit" disabled={isSubmitting} className="btn btn-primary">
             Добавить
         </button>

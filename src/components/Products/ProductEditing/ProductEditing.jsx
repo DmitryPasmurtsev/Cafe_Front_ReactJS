@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, Formik, Field } from "formik";
+import { Form, Formik, Field, validateYupSchema, ErrorMessage } from "formik";
 import { editProduct } from "../../../redux/reducers/productsReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect} from "react";
-import { getProduct } from "../../../redux/reducers/productInfoReducer";
+import { getProduct, setProduct } from "../../../redux/reducers/productInfoReducer";
 import { getProductSel } from "../../../redux/selectors/product-selectors";
 import { getJwtSel } from "../../../redux/selectors/user-selectors";
 import s from "../Products.module.css";
+import { productsAPI } from "../../../api/restAPI";
 
 const ProductEditing = () => {
 
@@ -16,7 +17,15 @@ const ProductEditing = () => {
     let productId = params.productId;
     let jwt = useSelector(getJwtSel);
     let product = useSelector(getProductSel);
-
+    const validate = (values, props) => {
+      const errors = {};
+      if (!values.name) {
+        errors.name = 'Обязательное поле';
+      } else if (!/^[а-яА-ЯёЁ\s]+$/i.test(values.name)) {
+        errors.name = 'Только русские буквы';
+      }
+      return errors;
+    };
     useEffect(()=> {
       dispatch(getProduct(jwt, productId))
     }, [JSON.stringify(product)])
@@ -28,20 +37,23 @@ const ProductEditing = () => {
       <Formik
       enableReinitialize
       initialValues={product}
-      // validate (values=> {
-      //     const errors = {};
-      //     if (!values.email) {
-      //       errors.email = 'Required';
-      //     } else if (
-      //       !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-      //     ) {
-      //       errors.email = 'Invalid email address';
-      //     }
-      //     return errors;
-      // })
+      validate={validate}
       onSubmit={(values) => {
-          dispatch(editProduct(jwt, product.id, values));
-          navigate('/products');
+        productsAPI.editProduct(jwt, product.id, values)
+        .then((response) => {
+             if (response.status == 400) {
+              document.getElementById("product").style.color="red";
+              document.getElementById("product").style.borderColor="red";
+              document.getElementById("productLabel").innerText="Продукт должен иметь уникальное название";
+              document.getElementById("productLabel").style.color="red";
+              document.getElementById("submitButton").disabled=false;
+             }
+            else {
+              dispatch(getProduct(jwt, productId));
+              const path = "/products/" + productId;
+              navigate(path);
+            }
+          });
       }}
     >
       {({
@@ -52,65 +64,87 @@ const ProductEditing = () => {
         handleBlur,
         handleSubmit,
         isSubmitting,
-        /* and other goodies */
       }) => (
         
         <Form onSubmit={handleSubmit} class={s.form}>
-          <div className={s.col}>
-          <label>Название</label><br/>
+          <div className={touched.name && errors.name ? s.errorCol : s.col}>
+          <label id="productLabel">Название</label><br/>
           <Field
             type="text"
             name="name"
+            id="product"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.name}
-            className={`form-control ${s.field}`}
-          />
+            className={`form-control ${s.field} ${
+              touched.name && errors.name ? s.errorField : ""
+            }`}
+          /><ErrorMessage
+          component="div"
+          name="name"
+          className={s.errorMessage}
+        />
           </div>
+          <div className={s.row}>
         <div className={s.col}>
           <label>Количество на складе</label>
           <Field
             type="number"
             name="amount"
+            min="0"
+            max="3000"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.amount}
             className={`form-control ${s.field}`}
+            required
           />
-        </div><br/><br/>
+        </div>
         <div className={s.col}>
-          <label>Калорийность</label>
+          <label>Калорийность</label>, ккал
           <Field
             type="number"
             name="calories"
+            min="1"
+            max="1000"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.calories}
             className={`form-control ${s.field}`}
+            required
           />
-        </div>
+        </div></div>
+        <div className={s.row}>
         <div className={s.col}>
-          <label>Стоимость</label>
+          <label>Стоимость</label>, BYN
           <Field
             type="number"
             name="price"
+            min="0.1"
+            max="1000"
+            step="0.1"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.price}
             className={`form-control ${s.field}`}
+            required
           />
-          </div><br/><br/>
+          </div>
           <div className={s.col}>
-          <label>Вес</label>
+          <label>Вес</label>, грамм
           <Field
             type="number"
             name="unitWeight"
+            required
+            min="1"
+            max="1000"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.unitWeight}
             className={`form-control ${s.field}`}
           />
-          </div>
+          </div></div>
+          <div className={s.row}>
           <div className={s.col}>
           <label>Описание</label>
           <Field
@@ -121,8 +155,9 @@ const ProductEditing = () => {
             value={values.description}
             className={`form-control ${s.field}`}
           />
-          </div><br/><br/>
-          <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+          </div>
+          </div>
+          <button id="submitButton" type="submit" disabled={isSubmitting} className="btn btn-primary">
             Сохранить
           </button>
         </Form>

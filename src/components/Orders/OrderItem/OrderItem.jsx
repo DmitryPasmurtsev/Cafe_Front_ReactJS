@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import s from "../Orders.module.css";
-import { deleteOrder } from "../../../redux/reducers/ordersReducer";
+import { deleteOrder, getOrders } from "../../../redux/reducers/ordersReducer";
 import { getJwtSel, getUserSel } from "../../../redux/selectors/user-selectors";
 
 const OrderItem = (props) => {
@@ -30,6 +30,7 @@ const OrderItem = (props) => {
           className="btn btn-danger mx-2"
           onClick={() => {
             dispatch(deleteOrder(jwt, order.id));
+            dispatch(getOrders(jwt));
             navigate("/orders" );
           }}
         >

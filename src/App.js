@@ -11,7 +11,6 @@ import ProductInfo from './components/Products/ProductInfo/ProductInfo';
 import SuppliersPage from './components/Suppliers/Suppliers';
 import SupplierInfo from './components/Suppliers/SupplierInfo/SupplierInfo';
 import SupplierEditing from './components/Suppliers/SupplierEditing/SupplierEditing';
-import Views from './components/Views/Views';
 import OrdersPage from './components/Orders/Orders';
 import OrderInfo from './components/Orders/OrderInfo/OrderInfo';
 import DeliveriesPage from './components/Deliveries/Deliveries';
@@ -49,7 +48,7 @@ const App = () => {
           <Route path="/employees/edit/:employeeId" element={<PrivateRoute><EmployeeEditing /></PrivateRoute>} />
           <Route path="/employees/create" element={
             <PrivateRoute>
-            {(["ROLE_DIRECTOR", "ROLE_ADMINISTRATOR"].includes(user.role)) && <EmployeeCreation/>}
+            {(["ROLE_DIRECTOR", "ROLE_ADMINISTRATOR"].includes(user?.role)) && <EmployeeCreation/>}
             </PrivateRoute>
           } />
 
@@ -57,12 +56,12 @@ const App = () => {
           <Route path="/products/:productId" element={<PrivateRoute><ProductInfo/></PrivateRoute>} />
           <Route path="/products/create" element={
             <PrivateRoute>
-              {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user.role)) && <ProductCreation/>}
+              {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user?.role)) && <ProductCreation/>}
             </PrivateRoute> 
           } />
           <Route path="/products/edit/:productId" element={
             <PrivateRoute>
-              {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user.role)) && <ProductEditing/>}
+              {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user?.role)) && <ProductEditing/>}
             </PrivateRoute> 
           } />
 
@@ -70,12 +69,12 @@ const App = () => {
           <Route path="/suppliers/:supplierId" element={<PrivateRoute><SupplierInfo/></PrivateRoute>} />
           <Route path="/suppliers/create" element={
             <PrivateRoute>
-              {(["ROLE_DIRECTOR", "ROLE_ADMINISTRATOR"].includes(user.role)) && <SupplierCreation/>}
+              {(["ROLE_DIRECTOR", "ROLE_ADMINISTRATOR"].includes(user?.role)) && <SupplierCreation/>}
             </PrivateRoute> 
           } />
           <Route path="/suppliers/edit/:supplierId" element={
             <PrivateRoute>
-            {(["ROLE_DIRECTOR", "ROLE_ADMINISTRATOR"].includes(user.role)) && <SupplierEditing/>}
+            {(["ROLE_DIRECTOR", "ROLE_ADMINISTRATOR"].includes(user?.role)) && <SupplierEditing/>}
           </PrivateRoute> 
           } />
 
@@ -83,7 +82,7 @@ const App = () => {
           <Route path="/orders/:orderId" element={<PrivateRoute><OrderInfo /></PrivateRoute>} />
           <Route path="/orders/create" element={
             <PrivateRoute>
-              {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user.role)) && <OrderCreation/>}
+              {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user?.role)) && <OrderCreation/>}
             </PrivateRoute> 
           } />
 
@@ -99,8 +98,6 @@ const App = () => {
               {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user.role)) && <DeliveryCreation/>}
             </PrivateRoute> 
           } />
-
-          <Route path="/views" element={<PrivateRoute><Views/></PrivateRoute>} />
           <Route path="/account" element={<PrivateRoute><AccountInfo/></PrivateRoute>} />
         </Routes>
       </div>

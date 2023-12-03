@@ -12,10 +12,23 @@
 
 .table{
     width: 95%;
+    align-content: center;
+}
+
+.row {
+    vertical-align: top;
 }
 
 .col {
-    width: 50%; display: inline-block;
+    width: 50%; 
+    display: inline-table;
+    margin-bottom: 40px;
+}
+
+.errorCol {
+    width: 50%; 
+    display: inline-table;
+    margin-bottom: 16px;
 }
 
 .field {
@@ -39,4 +52,15 @@
 
 .center {
     text-align: center;
+}
+
+.errorField{
+    border-color: red;
+    color: red;
+}
+
+.errorMessage{
+    color: red;
+    width: max-content;
+    margin-bottom: 0px;
 }

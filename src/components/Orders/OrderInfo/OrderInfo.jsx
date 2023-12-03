@@ -27,22 +27,25 @@ const OrderInfo = () => {
           <br />
           <p><b>Официант:</b> {order.waiter.fullName}</p>
           <p><b>Дата и время заказа:</b> {order.time}</p>
-          <p><b>Стоимость:</b> {order.price} руб.</p>
+          <p><b>Стоимость:</b> {order.price} BYN</p>
+          {order.description && <p><b>Описание:</b> {order.description}</p>}
+          <b>Состав заказа:</b>
           <ul>
-            {order.orderComposition.map((orderPosition) => (
+            {order.products.map((product) => (
               <li>
-                {orderPosition.id.product.name} {orderPosition.amount} шт.{" "}
+                {product.name} {product.productAmount} шт.
               </li>
             ))}
           </ul>
         </div>
       )}
-      {orderId != order.id && errorMessage =="" (
+      {orderId != order.id && errorMessage =="" &&
         <div>
           <Preloader />
         </div>
-      )}
-      {errorMessage !== "" && <h3>{errorMessage}</h3>}
+      }
+      {errorMessage != "" && <h3>{errorMessage}</h3>}
+     
     </div>
   );
 };

@@ -31,9 +31,8 @@ export const getProducts = (jwt) => {
 }
 
 export const deleteProduct = (jwt, productId) => {
-    return (dispatch) => {
+    return () => {
         productsAPI.deleteProduct(jwt, productId);
-        dispatch(getProducts(jwt));
     }
 }
 

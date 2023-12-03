@@ -27,7 +27,7 @@ export const getOrder = (jwt, orderId) => {
     return (dispatch) => {
         ordersAPI.getOrder(jwt, orderId).then((response) => {
             if(response.status == 404) dispatch(setErrorMessage(response.data.message));
-            else dispatch(setOrder(response), setErrorMessage(''));
+            else dispatch(setOrder(response));
           });
     }
 }

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import {useNavigate } from "react-router-dom";
-import { deleteEmployee } from "../../../redux/reducers/employeesReducer";
+import { deleteEmployee, getEmployees } from "../../../redux/reducers/employeesReducer";
 import s from "../Employees.module.css";
 import { getJwtSel, getUserSel } from "../../../redux/selectors/user-selectors";
 import cafeLogo from "../../../resources/cafeLogo.png";
@@ -30,6 +30,7 @@ const EmployeeItem = (props) => {
           className="btn btn-outline-danger mx-2"
           onClick={() => {
             dispatch(deleteEmployee(jwt, employee.id));
+            dispatch(getEmployees(jwt));
             navigate("/employees" );
           }}
         >

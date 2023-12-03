@@ -22,10 +22,12 @@ const ProductInfo = () => {
     return (
         <div>
             {productId == product.id &&
-            <div><h4>{product.name}</h4>
-            <p>Калории: {product.calories}</p>
-            <p>Цена: {product.price}</p>
-            <p>Количество на складе: {product.amount}</p>
+            <div><h4>{product.name}</h4><br/>
+            <p><b>Калории:</b> {product.calories}, ккал</p>
+            <p><b>Цена:</b> {product.price}, BYN</p>
+            <p><b>Количество на складе:</b> {product.amount}</p>
+            <p><b>Вес:</b> {product.unitWeight}, грамм</p>
+            {product.description && <p><b>Описание:</b> {product.description}</p>}
             {(["ROLE_DIRECTOR", "ROLE_WAITER", "ROLE_ADMINISTRATOR"].includes(user.role)) &&
             <button
           className="btn btn-outline-primary"

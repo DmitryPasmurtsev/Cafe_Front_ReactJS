@@ -1,13 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Form, Formik, Field } from "formik";
+import { Form, Formik, Field, ErrorMessage } from "formik";
 import { useEffect} from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { getEmployee } from "../../../redux/reducers/employeeInfoReducer";
 import { getEmployeeSel, getPositionsSel } from "../../../redux/selectors/employee-selectors";
 import { editEmployee, getPositions } from "../../../redux/reducers/employeesReducer";
-import { isSubmitting } from "redux-form";
+import { autofill, isSubmitting } from "redux-form";
 import { getJwtSel, getUserSel } from "../../../redux/selectors/user-selectors";
 import s from "../Employees.module.css";
+import { employeesAPI } from "../../../api/restAPI";
 
 const EmployeeEditing = () => {
     const navigate = useNavigate();
@@ -27,7 +28,46 @@ const EmployeeEditing = () => {
       dispatch(getPositions(jwt));
    }, []);
     
+   const validate = (values, props) => {
+    const errors = {};
+    if (!values.fullName) {
+      errors.fullName = 'Обязательное поле';
+    } else if (!/^[а-яА-ЯёЁ\s]+$/i.test(values.fullName)) {
+      errors.fullName = 'Только русские буквы';
+    } else if (!/^(?:[А-ЯЁ][а-яё]+ ){2}[А-ЯЁ][а-яё]+$/i.test(values.fullName)) {
+      errors.fullName = 'Введите ФИО в три слова';
+    }
+    if (!values.phone) {
+      errors.phone = 'Обязательное поле';
+    } else if (!/^(80(29|44|33|25|17)\d{7})$/i.test(values.phone)) {
+      errors.phone= 'Проверьте код и длину';
+    }
+    return errors;
+  };
 
+  const errorPhone = () => {
+    document.getElementById("phone").style.color="red";
+    document.getElementById("phone").style.borderColor="red";
+    document.getElementById("phoneLabel").innerText="Телефон должен быть уникальным";
+    document.getElementById("phoneLabel").style.color="red";
+
+    document.getElementById("email").style.color="black";
+    document.getElementById("email").style.borderColor="black";
+    document.getElementById("emailLabel").innerText="Электронная почта";
+    document.getElementById("emailLabel").style.color="black";
+  }
+
+  const errorEmail = () => {
+    document.getElementById("email").style.color="red";
+    document.getElementById("email").style.borderColor="red";
+    document.getElementById("emailLabel").innerText="Почта должна быть уникальной";
+    document.getElementById("emailLabel").style.color="red";
+ 
+    document.getElementById("phone").style.color="black";
+    document.getElementById("phone").style.borderColor="black";
+    document.getElementById("phoneLabel").innerText="Номер телефона";
+    document.getElementById("phoneLabel").style.color="black";
+  }
 
 
   return (
@@ -36,12 +76,24 @@ const EmployeeEditing = () => {
       <Formik
       enableReinitialize
       initialValues={employee}
-      
-      onSubmit={async (values) => {
-        isSubmitting(true);
-          await dispatch(await editEmployee(jwt, employee.id, values));
-          isSubmitting(false);
-          navigate('/employees');
+      validate={validate}
+      onSubmit={(values) => {
+        employeesAPI.editEmployee(jwt,employeeId, values)
+        .then((response) => {
+             if (response.status == 400) {
+              if(response.data.field==="email") {
+                errorEmail();
+              } else if(response.data.field==="phone"){
+                errorPhone();
+              }
+              document.getElementById("submitButton").disabled=false;
+             }
+            else {
+              dispatch(getEmployee(jwt, employeeId));
+              const path = "/employees/" + employeeId;
+              navigate(path);
+            }
+          });
       }}
     >
       {({
@@ -49,12 +101,13 @@ const EmployeeEditing = () => {
         handleChange,
         handleBlur,
         handleSubmit,
-        isSubmitting
+        isSubmitting,
+        touched,
+        errors
       }) => (
         
         <Form onSubmit={handleSubmit} class={s.form}>
-         
-        <div className="form-group">
+        <div className={touched.fullName && errors.fullName ? s.errorCol : s.col}>
           <label>ФИО</label><br/>
           <Field
             type="text"
@@ -62,10 +115,18 @@ const EmployeeEditing = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.fullName}
-            className={`form-control ${s.field}`}
+            className={`form-control ${s.field} ${
+              touched.fullName && errors.fullName ? s.errorField : ""
+            }`}
           />
         </div>
+        <ErrorMessage
+            component="div"
+            name="fullName"
+            className={s.errorMessage}
+          />
         {user.role!=="ROLE_WAITER" && <>
+        <div className={s.row}>
           <div className={s.col}>
           <label>Должность</label><br/>
           <Field
@@ -73,6 +134,7 @@ const EmployeeEditing = () => {
             name="position.id"
             onChange={handleChange}
             onBlur={handleBlur}
+            required
             className={`form-control ${s.field}`}
           >
             {positions.map((position) => {
@@ -85,21 +147,27 @@ const EmployeeEditing = () => {
           <Field
             type="number"
             name="experience"
+            min="0"
+            max="60"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.experience}
             className={`form-control ${s.field}`}
-          /></div>
-          <br/><br/>
+            required
+          /></div></div>
+          <div className={s.row}>
         <div className={s.col}>
-          <label>Зарплата</label>
+          <label>Зарплата</label>, BYN
           <Field
             type="number"
             name="salary"
+            min="0"
+            max="5000"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.salary}
             className={`form-control ${s.field}`}
+            required
           />
           </div>
           <div className={s.col}>
@@ -111,32 +179,42 @@ const EmployeeEditing = () => {
             onBlur={handleBlur}
             value={values.date}
             className={`form-control ${s.field}`}
-          />
-          </div><br/><br/></>}
-
-          <div className={s.col}>
-          <label>Телефон</label>
+            required
+          /></div>
+          </div> </>}
+          <div className={s.row}>
+          <div className={touched.phone && errors.phone ? s.errorCol : s.col}>
+          <label id="phoneLabel">Телефон</label>
           <Field
             type="text"
             name="phone"
+            id="phone"
+            placeholder="80XXXXXXXXX"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.phone}
-            className={`form-control ${s.field}`}
+            className={`form-control ${s.field} ${
+              touched.phone && errors.phone ? s.errorField : ""}`}
+          />
+          <ErrorMessage
+            component="div"
+            name="phone"
+            className={s.errorMessage}
           />
           </div>
           <div className={s.col}>
-          <label>Электронная почта</label>
+          <label id="emailLabel">Электронная почта</label>
           <Field
             type="email"
             name="email"
+            id="email"
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.email}
             className={`form-control ${s.field}`}
-          />
-          </div><br/><br/>
-          <button type="submit" disabled={isSubmitting} className="btn btn-primary">
+          /></div>
+          </div>
+          <button id="submitButton" type="submit" disabled={isSubmitting} className="btn btn-primary">
             Сохранить
           </button>
         </Form>

@@ -21,7 +21,7 @@ const AccountInfo = () => {
         <form onSubmit={() => employeesAPI.updateImage(jwt, user.employee.id, document.getElementById("linkToImage").value)}>
             <input type="text" placeholder="Вставьте ссылку на фото..." id="linkToImage"/>
             <button>Добавить фото</button>
-        </form>
+        </form><br/>
         <p>
           <b>Логин:</b> {user.login}
         </p>

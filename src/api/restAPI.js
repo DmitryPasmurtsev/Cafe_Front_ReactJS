@@ -2,7 +2,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8061/api/'
+    baseURL: 'http://localhost:8062/api/'
 });
 
 
@@ -58,8 +58,8 @@ export const employeesAPI = {
             }
         });
     },
-    addEmployee(jwt, employee) {
-        instance.post('employees', employee,{
+    async addEmployee(jwt, employee) {
+        return await instance.post('employees', employee,{
             headers: {
                 Authorization: `Bearer ${jwt}`
             }})
@@ -75,8 +75,8 @@ export const employeesAPI = {
                 Authorization: `Bearer ${jwt}`
             }});
     },
-    editEmployee(jwt, employeeId, updatedEmployee){
-        instance.put('employees/'+ employeeId, updatedEmployee,{
+    async editEmployee(jwt, employeeId, updatedEmployee){
+        return await instance.put('employees/'+ employeeId, updatedEmployee,{
             headers: {
                 Authorization: `Bearer ${jwt}`
             }})
@@ -121,8 +121,8 @@ export const productsAPI = {
             }
         });
     },
-    addProduct(jwt, product) {
-        instance.post('products', product,{
+    async addProduct(jwt, product) {
+        return await instance.post('products', product,{
             headers: {
                 Authorization: `Bearer ${jwt}`
             }})
@@ -153,7 +153,7 @@ export const productsAPI = {
 
 export const positionsAPI = {
     getPositions(jwt) {
-        return instance.get('positions',{
+        return instance.get('employees/positions',{
             headers: {
                 Authorization: `Bearer ${jwt}`
             }})
@@ -199,8 +199,8 @@ export const suppliersAPI = {
             }
         });
     },
-    addSupplier(jwt, supplier) {
-        instance.post('suppliers', supplier,{
+    async addSupplier(jwt, supplier) {
+        return await instance.post('suppliers', supplier,{
             headers: {
                 Authorization: `Bearer ${jwt}`
             }})
@@ -245,6 +245,7 @@ export const ordersAPI = {
                 Authorization: `Bearer ${jwt}`
             }})
         .then(response => {
+            console.log(response.data);
             return response.data
         })
         .catch(err=> {

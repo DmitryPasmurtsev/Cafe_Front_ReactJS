@@ -18,7 +18,7 @@ const Header = () => {
        </div>
        <div className={s.title}>Cafe</div>
        <div className={s.profile}>
-        {jwt != "" && <div class={s.user}onClick={()=> navigate("/account")}><i class={`fa-solid fa-user ${s.icon}`}/><h3>{user.login}</h3></div>}
+        {jwt != "" && <div class={s.user}onClick={()=> navigate("/account")}><i class={`fa-solid fa-user ${s.icon}`}/><h3>{user?.login}</h3></div>}
         {jwt == "" && <NavLink to='/login' className={s.link}><h3>Войти</h3></NavLink>}
        </div>
     </header>
