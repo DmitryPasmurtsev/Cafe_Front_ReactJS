@@ -4,7 +4,7 @@ import { getProductsSel } from "../../../redux/selectors/product-selectors";
 import { getJwtSel } from "../../../redux/selectors/user-selectors"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addOrderRed } from "../../../redux/reducers/ordersReducer";
+import { addOrderRed, getOrders } from "../../../redux/reducers/ordersReducer";
 import { Field, Form, Formik } from "formik";
 import { isSubmitting } from "redux-form";
 import s from "../Orders.module.css"
@@ -38,6 +38,7 @@ const OrderCreation = () => {
     const addOrder= (values ) => {
           isSubmitting(true);
           dispatch(addOrderRed(jwt, {productsNames: productsNames, amounts: amountsOfProducts, description: values.description}))
+          dispatch(getOrders(jwt));
           isSubmitting(false);
           navigate('/orders');
     }
@@ -72,7 +73,6 @@ const OrderCreation = () => {
             name="productName"
             onChange={handleChange}
             onBlur={handleBlur}
-            required
             className="form-control"
           >
             <option value={""}>Не выбран</option>
@@ -91,12 +91,12 @@ const OrderCreation = () => {
             onBlur={handleBlur}
             value={values.amount}
             className="form-control"
-            required
           />
         </div>
           <button type="button" onClick={() => {addProductInOrder(values); resetForm()}} disabled={isSubmitting} className="btn btn-primary">
         Добавить в заказ
           </button><br/><br/>
+          {productsNames.length!=0 && amountsOfProducts.length!=0 &&<>
         <div className="form-group">
           <label>Описание</label>
           <Field
@@ -109,8 +109,8 @@ const OrderCreation = () => {
           />
         </div>
           <button type="submit" disabled={isSubmitting} onClick={()=>addOrder(values)} className="btn btn-primary">
-        Заказ
-          </button><br/><br/>
+        Сохранить заказ
+          </button><br/><br/></>}
         </Form>
       )}
     </Formik>

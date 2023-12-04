@@ -16,7 +16,6 @@ const EmployeeInfo = () => {
     let employee = useSelector(getEmployeeSel);
     let errorMessage = useSelector(getErrorMessageSel);
     let user = useSelector(getUserSel);
-    console.log(user)
     let position = {...employee.position}
     useEffect(()=> {
       dispatch(getEmployee(jwt, employeeId));

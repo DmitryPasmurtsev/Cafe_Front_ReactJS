@@ -1,10 +1,8 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:8062/api/'
+    baseURL: 'http://localhost:8061/api/'
 });
-
 
 export const authAPI = {
     registration(registrationRequest) {
@@ -145,6 +143,7 @@ export const productsAPI = {
             }})
             .catch(err=> {
                 if(err.response) {
+                    console.log('sdjfsdf');
                     return err.response;
                 }
             });
@@ -254,7 +253,7 @@ export const ordersAPI = {
             }
         });
     },
-    addOrder(jwt, order) {
+    async addOrder(jwt, order) {
         instance.post('orders', order,{
             headers: {
                 Authorization: `Bearer ${jwt}`
