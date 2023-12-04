@@ -25,12 +25,14 @@ const OrderCreation = () => {
    }, [JSON.stringify(allProducts)]);
 
    const addProductInOrder = (values) => {
+    if(values.amount && values.productName) {
       setProductsNames([...productsNames, values.productName]);
       setAmountsOfProducts([...amountsOfProducts, values.amount])
       setOrderPositions([...orderPositions, {
         productName: values.productName,
         amount: values.amount
       }])
+    }
     } 
 
     const addOrder= (values ) => {
