@@ -27,7 +27,7 @@ const EmployeeInfo = () => {
             <div><h4>{employee.fullName}</h4><br/>
             <p><b>Должность:</b> {position.name}</p>
             <p><b>Телефон:</b> {employee.phone}</p>
-            <p><b>Зарплата:</b> {employee.salary}</p>
+            <p><b>Зарплата:</b> {employee.salary}, BYN</p>
             <p><b>Электронная почта:</b> {employee.email}</p>
             <p><b>Дата приема на работу:</b> {employee.date}</p>
             {(["ROLE_DIRECTOR", "ROLE_ACCOUNTANT", "ROLE_ADMINISTRATOR"].includes(user.role) || (user.role==="ROLE_WAITER" && user.employee.id == employee.id)) &&

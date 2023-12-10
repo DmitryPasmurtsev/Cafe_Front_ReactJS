@@ -1,6 +1,6 @@
 .nav {
     grid-area: n;
-    background-color: #f1f1f1;
+    background-color: #f2cee4;
     padding: 10px;
     position: fixed;
     left: 15px;
@@ -18,14 +18,14 @@
 
 .active {
     display: block;
-    background-color: #04AA6D;
+    background-color: rgb(220, 95, 191);
     color: white;
     padding: 8px 16px;
     text-decoration: none;
 }
   
   .item:hover {
-    background-color: #787878;
+    background-color: #a0a0a0;
     color: white;
     text-decoration: none;
   }

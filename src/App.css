@@ -12,8 +12,10 @@
 }
 
 .app-wrapper-content {
-    width: 1120px;
+    width: 1125px;
+    
+    min-height: 100vh;
     grid-area: c;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(246, 227, 241);
     padding: 20px;
 }

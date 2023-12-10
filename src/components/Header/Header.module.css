@@ -1,7 +1,7 @@
 .header {
     grid-area: h;
     display: grid;
-    background-color: #f1f1f1;
+    background-color: #f2cee4;
     grid-template-areas:
         "img title profile";
     grid-template-columns: 1fr 19fr 2fr;
@@ -39,7 +39,7 @@
 }
 
 .user:hover {
-    color:  #04AA6D;
+    color:  rgb(220, 95, 191);
 }
 
 .icon {

@@ -1,0 +1,11 @@
+.text {
+    padding: 1vh;
+    font-size: large;
+    justify-content: space-between;
+    font-weight: bolder;
+  }
+  
+  .image {
+    width: 70%;
+    height: 70%;
+  }
